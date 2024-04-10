@@ -1,10 +1,9 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
-import * as csurf from 'csurf'
 import helmet from "helmet";
 
 export async function setupApp(app: INestApplication) {
     //global prefix
-    app.setGlobalPrefix(process.env.SERVER_NAME)
+    app.setGlobalPrefix(process.env.VERSION)
 
     //format respone error (without 500)
     app.useGlobalPipes(new ValidationPipe({
@@ -21,9 +20,6 @@ export async function setupApp(app: INestApplication) {
         },
         // stopAtFirstError: true,
     }));
-
-    //csrf protection
-    app.use(csurf())
 
     //helmet protection
     app.use(helmet())

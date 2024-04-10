@@ -1,4 +1,5 @@
 import { Repository } from "typeorm";
+import * as bcrypt from 'bcrypt'
 import { GenericEntity } from "./base.entity";
 
 export abstract class BaseService<T extends GenericEntity> {
@@ -28,5 +29,15 @@ export abstract class BaseService<T extends GenericEntity> {
 
         object.isDelete = true
         return await this.baseRepository.save(object)
+    }
+
+    async hashing(password: string): Promise<string> {
+        const salt = await bcrypt.genSalt()
+        const hash = await bcrypt.hash(password, salt)
+        return hash
+    }
+
+    async isMatch(password: string, hash: string): Promise<boolean> {
+        return await bcrypt.compare(password, hash)
     }
 }

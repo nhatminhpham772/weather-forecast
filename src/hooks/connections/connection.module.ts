@@ -8,14 +8,10 @@ import { ThrottlerModule } from '@nestjs/throttler'
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            ...postgresOption,
-            autoLoadEntities: true
-        }),
-        CacheModule.register<RedisClientOptions>({
-            isGlobal: true,
-            ...redisClientOption
-        }),
+        // CacheModule.register<RedisClientOptions>({
+        //     isGlobal: true,
+        //     ...redisClientOption
+        // }),
         ThrottlerModule.forRoot([
             ...rateLimiting
         ])

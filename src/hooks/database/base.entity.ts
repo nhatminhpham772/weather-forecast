@@ -1,8 +1,13 @@
 import { BaseEntity, Column, PrimaryColumn } from "typeorm";
+import { nanoid } from "nanoid";
 
 export abstract class GenericEntity {
+    constructor() {
+        this.id = nanoid()
+    }
+
     @PrimaryColumn()
-    id: any
+    id: string
 
     @Column({ default: false })
     isDelete: boolean;
