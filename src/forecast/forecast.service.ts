@@ -21,7 +21,7 @@ export class ForecastService extends BaseService<User> {
   }
 
   async currentWeather(city: string): Promise<any> {
-    const url = this.weather_api + '/current.json?q=' + city + '&lang=vi'
+    const url = this.weather_api + '/current.json?q=' + city + '&lang=vi&key=' + this.weather_api_key
     const response = await firstValueFrom(this.httpService.get<any>(url).pipe(map((resp) => resp.data)))
     return response
   }
