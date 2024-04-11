@@ -7,7 +7,7 @@ import { SignInDto } from "../dtos/sign-in.dto";
 import AppResponse, { AppResponseInterface } from "src/config/sections/app.response";
 
 @ApiTags('AUTH')
-@Controller('user')
+@Controller('auth')
 export class UserAuthController {
     private res: AppResponseInterface = AppResponse
     constructor(
@@ -15,7 +15,7 @@ export class UserAuthController {
     ) { }
 
     @UseGuards(UserAuthGuard)
-    @Post('auth')
+    @Post()
     async signin(
         @Req() req,
         @Body() dto: SignInDto,
