@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Response } from 'express';
@@ -8,6 +8,7 @@ import { Token } from '../entities/token.entity';
 import { User } from '../entities/user.entity';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import * as dotenv from 'dotenv'
+import { UserService } from './user.service';
 
 dotenv.config()
 
@@ -16,7 +17,8 @@ export class UserAuthService extends BaseService<User> {
     constructor(
         @InjectRepository(Token) private readonly tokenRepository: Repository<Token>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
+        private readonly userService: UserService
     ) {
         super(userRepository)
     }
@@ -29,16 +31,8 @@ export class UserAuthService extends BaseService<User> {
         })
     }
 
-    async findUserByEmail(email: string): Promise<User> {
-        const user = await this.userRepository.findOneBy({ email: email })
-        if (!user)
-            throw new NotFoundException('user_not_found')
-
-        return user
-    }
-
     async validateUser(email: string, password: string): Promise<any> {
-        const user = await this.findUserByEmail(email)
+        const user = await this.userService.findUserByEmail(email)
 
         if (user && (await this.isMatch(password, user.password)))
             return {
@@ -66,7 +60,7 @@ export class UserAuthService extends BaseService<User> {
     }
 
     async saveToken(parent = null, refresh: Token, email: string): Promise<Token> {
-        const user = await this.findUserByEmail(email)
+        const user = await this.userService.findUserByEmail(email)
 
         refresh.user = user
         refresh.parent = parent
@@ -74,7 +68,14 @@ export class UserAuthService extends BaseService<User> {
         return await this.tokenRepository.save(refresh)
     }
 
-    async signin(user: User): Promise<any> {
+    async signin(email: string): Promise<any> {
+        const user = await this.userService.findUserByEmail(email)
+        if(user.isActive === false) {
+            await this.userService.createOtp(user)
+
+            throw new BadRequestException('Vui lòng kiểm tra otp trong hòm thư')
+        }
+
         const payload = {
             email: user.email,
             id: user.id
@@ -89,6 +90,8 @@ export class UserAuthService extends BaseService<User> {
             metadata: {
                 data: {
                     id: user.id,
+                    email: user.email,
+                    email_notification: user.email_notification,
                     jwt_token: accessToken
                 },
             },
@@ -135,7 +138,7 @@ export class UserAuthService extends BaseService<User> {
             return this.deleteStolenToken(req)
         }
 
-        const user = await this.findUserByEmail(usedToken.user.email)
+        const user = await this.userService.findUserByEmail(usedToken.user.email)
 
         const payload = {
             email: user.email,
@@ -152,7 +155,9 @@ export class UserAuthService extends BaseService<User> {
         return {
             metadata: {
                 data: {
+                    id: user.id,
                     email: user.email,
+                    email_notification: user.email_notification,
                     jwtToken: accessToken
                 },
             },

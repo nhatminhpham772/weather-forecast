@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsMobilePhone, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsMobilePhone, IsNotEmpty, IsString } from "class-validator";
 
 export class SignInDto {
     @IsNotEmpty()
-    @IsMobilePhone()
+    @IsEmail()
     @ApiProperty({ example: 'nhatminh772002@gmail.com' })
     email: string
 
