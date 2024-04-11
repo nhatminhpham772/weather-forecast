@@ -33,16 +33,22 @@ export class ForecastService extends BaseService<User> {
     return response.forecast.forecastday
   }
 
-  async forecastWeatherFrom13To300Day(city: string, date: Date): Promise<any> {
+  convertDateToString(date: Date) {
     const year = date.getFullYear().toString().padStart(4, "0")
     const month = (date.getMonth() + 1).toString().padStart(2, "0")
-    var day = parseInt(date.getDate().toString().padStart(2, "0"))
+    const day = date.getDate().toString().padStart(2, "0")
+
+    return year + '-' + month + '-' + day
+  }
+
+  async forecastWeatherFrom13To300Day(city: string, date: Date): Promise<any> {
     var data = []
-    for(let i=0; i<4; day++,i++) {
-      var dateForecast = year + '-' + month + '-' + day
+    for(let i=0; i<4; i++) {
+      var dateForecast = this.convertDateToString(date)
       const url = this.weather_api + '/future.json?q=' + city + '&lang=vi&dt=' + dateForecast + '&key=' + this.weather_api_key
       const response = await firstValueFrom(this.httpService.get<any>(url).pipe(map((resp) => resp.data)))
       data = [...data, ...response.forecast.forecastday]
+      date.setDate(date.getDate() + 1)
     }
 
     return data
