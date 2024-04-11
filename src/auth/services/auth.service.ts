@@ -88,13 +88,11 @@ export class UserAuthService extends BaseService<User> {
 
         return {
             metadata: {
-                data: {
-                    id: user.id,
-                    email: user.email,
-                    email_notification: user.email_notification,
-                    city: user.city,
-                    jwt_token: accessToken
-                },
+                id: user.id,
+                email: user.email,
+                email_notification: user.email_notification,
+                city: user.city,
+                jwt_token: accessToken
             },
             refresh: refresh.refresh_token
         }
@@ -155,13 +153,11 @@ export class UserAuthService extends BaseService<User> {
 
         return {
             metadata: {
-                data: {
-                    id: user.id,
-                    email: user.email,
-                    email_notification: user.email_notification,
-                    city: user.city,
-                    jwtToken: accessToken
-                },
+                id: user.id,
+                email: user.email,
+                email_notification: user.email_notification,
+                city: user.city,
+                jwtToken: accessToken
             },
             refresh: refresh.refresh_token
         }
