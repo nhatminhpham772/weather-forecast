@@ -6,6 +6,7 @@ import { BaseService } from '../hooks/database/base.service';
 import { User } from '../auth/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserService } from 'src/auth/services/user.service';
 dotenv.config()
 
 @Injectable()
@@ -15,7 +16,8 @@ export class ForecastService extends BaseService<User> {
 
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly userService: UserService
   ) {
     super(userRepository)
   }
@@ -52,6 +54,21 @@ export class ForecastService extends BaseService<User> {
     }
 
     return data
+  }
+
+  async notificationForecastWeather(city: string, gmail: string): Promise<any> {
+    const user = await this.userService.findUserByEmail(gmail)
+
+    if(user.email_notification) {
+      user.email_notification = false
+      await this.userRepository.save(user)
+    } else {
+      user.email_notification = true
+      user.city = city
+      await this.userRepository.save(user)
+    }
+
+    return 'Thành công'
   }
 
 }

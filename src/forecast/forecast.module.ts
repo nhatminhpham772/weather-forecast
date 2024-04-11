@@ -4,13 +4,15 @@ import { ForecastController } from './forecast.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../auth/entities/user.entity';
+import { UserService } from '../auth/services/user.service';
+import { Otp } from '../auth/entities/otp.entity';
 
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Otp]),
   ],
   controllers: [ForecastController],
-  providers: [ForecastService],
+  providers: [ForecastService, UserService],
 })
 export class ForecastModule { }

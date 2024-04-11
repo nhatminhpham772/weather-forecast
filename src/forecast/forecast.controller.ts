@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Inject, UseGuards, Req } from '@nestjs/common';
 import { ForecastService } from './forecast.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import AppResponse, { AppResponseInterface } from 'src/config/sections/app.response';
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Cache } from "cache-manager";
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 
 @ApiTags('FORECAST')
 @Controller('forecast')
@@ -51,5 +52,18 @@ export class ForecastController {
       } catch (error) {
         return this.res.setLib(res).setStatus(400).setBody(error.toString()).release()
       }
+  }
+
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  @Patch('/notification/:city')
+  async notificationForecastWeather(@Param('city') city: string, @Req() req, @Res() res) {
+    try {
+      let data = await this.forecastService.notificationForecastWeather(city, req.user.email)
+
+      return this.res.setLib(res).setStatus(200).setBody(data).release()
+    } catch (error) {
+      return this.res.setLib(res).setStatus(400).setBody(error.toString()).release()
+    }
   }
 }

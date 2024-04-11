@@ -92,6 +92,7 @@ export class UserAuthService extends BaseService<User> {
                     id: user.id,
                     email: user.email,
                     email_notification: user.email_notification,
+                    city: user.city,
                     jwt_token: accessToken
                 },
             },
@@ -158,6 +159,7 @@ export class UserAuthService extends BaseService<User> {
                     id: user.id,
                     email: user.email,
                     email_notification: user.email_notification,
+                    city: user.city,
                     jwtToken: accessToken
                 },
             },
