@@ -42,7 +42,7 @@ export class ForecastService extends BaseService<User> {
       var dateForecast = year + '-' + month + '-' + day
       const url = this.weather_api + '/future.json?q=' + city + '&lang=vi&dt=' + dateForecast + '&key=' + this.weather_api_key
       const response = await firstValueFrom(this.httpService.get<any>(url).pipe(map((resp) => resp.data)))
-      data = [data, ...response.forecast.forecastday]
+      data = [...data, ...response.forecast.forecastday]
     }
 
     return data
