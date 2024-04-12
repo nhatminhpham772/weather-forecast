@@ -29,7 +29,7 @@ export class ForecastService extends BaseService<User> {
     super(userRepository)
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  @Cron(CronExpression.EVERY_DAY_AT_6AM)
   async notifyForecastInEmail() {
       const users = await this.userRepository.findBy({ email_notification: true, isActive: true })
       users.forEach(async (u) => {
