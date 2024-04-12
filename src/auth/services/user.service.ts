@@ -6,6 +6,7 @@ import { Token } from "../entities/token.entity";
 import { Repository } from "typeorm";
 import { SignUpDto } from "../dtos/sign-up.dto";
 import { Otp } from "../entities/otp.entity";
+import * as nodemailer from 'nodemailer'
 
 const nodemailer = require("nodemailer")
 

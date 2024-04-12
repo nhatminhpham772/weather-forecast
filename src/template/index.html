@@ -1,0 +1,63 @@
+
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+    xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--<![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="date=no" />
+    <meta name="format-detection" content="address=no" />
+    <meta name="format-detection" content="email=no" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap"
+        rel="stylesheet" />
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'Josefin Sans', sans-serif;  
+        }
+    </style>
+</head>
+<body>
+    <div style="font-family: sans-serif;">
+        <section class="sky" style="position: absolute; top: 0; width: 100%;">
+            <div class="icon" style="margin: 0 auto; width: 90px; height: 90px; margin-top: 30px !important;" title="Free Weather API"><img src="{{ icon_weather }}" height="100%" alt="Weather data by WeatherAPI.com"></div>
+        </section>
+        <section class="content" style="margin-top: 10px; text-align: center; color: black;">
+            <h1 style="font-size: 80px; margin-left: 20px;">{{ avgtemp_c }}&deg;</h1>
+            <h3 style="font-size: 25px; font-weight: 300;">{{ city }}, {{ country }} ({{ localtime }})</h3>
+            <h5 style="font-size: 20px; margin-top: 10px; font-weight: 200;">{{ text }}</h5>
+
+            <div class="details" style="display: flex; margin: 0 auto; width: 800px; height: 100%; margin-top: 16px; font-weight: 300;">
+                <div style="margin: auto; width: 400px;">
+                    <p class="value" style="font-size: 36px;">{{ mintemp_c }}&deg;</p>
+                    <p class="label" style="font-size: 14px;">Tối thiểu</p>
+                </div>
+                <div style="margin: auto; width: 400px;">
+                    <p class="value" style="font-size: 36px;">{{ maxtemp_c }}&deg;</p>
+                    <p class="label" style="font-size: 14px;">Tối đa</p>
+                </div>
+            </div>
+            <div class="details" style="display: flex; margin: 0 auto; width: 800px; height: 100%; margin-top: 16px; font-weight: 300;">
+                <div style="margin: auto; width: 400px;">
+                    <p class="value" style="font-size: 36px;">{{ avghumidity }}%</p>
+                    <p class="label" style="font-size: 14px;">Độ ẩm</p>
+                </div>
+                <div style="margin: auto; width: 400px;">
+                    <p class="value" style="font-size: 36px;">{{ maxwind_mph }} m/s</p>
+                    <p class="label" style="font-size: 14px;">Tốc độ gió</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

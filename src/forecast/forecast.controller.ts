@@ -56,10 +56,10 @@ export class ForecastController {
 
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
-  @Patch('/notification/:city')
-  async notificationForecastWeather(@Param('city') city: string, @Req() req, @Res() res) {
+  @Patch('/notification/:city/:active')
+  async notificationForecastWeather(@Param('city') city: string, @Param('active') active: boolean, @Req() req, @Res() res) {
     try {
-      let data = await this.forecastService.notificationForecastWeather(city, req.user.email)
+      let data = await this.forecastService.notificationForecastWeather(city, active, req.user.email)
 
       return this.res.setLib(res).setStatus(200).setBody(data).release()
     } catch (error) {
