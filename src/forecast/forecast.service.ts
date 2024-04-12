@@ -90,12 +90,7 @@ export class ForecastService extends BaseService<User> {
 
   async notificationForecastWeather(city: string, isActive: boolean, email: string): Promise<any> {
     const user = await this.userService.findUserByEmail(email)
-
-    if(!isActive) {
-      user.email_notification = false
-      await this.userRepository.save(user)
-    } else {
-
+    if(isActive === true) {
       try {
         const data = await this.currentDayWeather(city)
         await this.mailer(email, data)
@@ -105,6 +100,9 @@ export class ForecastService extends BaseService<User> {
 
       user.email_notification = true
       user.city = city
+      await this.userRepository.save(user)
+    } else {
+      user.email_notification = false
       await this.userRepository.save(user)
     }
 

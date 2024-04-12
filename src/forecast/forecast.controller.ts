@@ -12,7 +12,6 @@ export class ForecastController {
   private res: AppResponseInterface = AppResponse
   constructor(
     private readonly forecastService: ForecastService,
-    // @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) { }
 
   @Get('/current/:city')
@@ -21,8 +20,6 @@ export class ForecastController {
       let data = await this.forecastService.currentWeather(city)
 
       var datetime = new Date(data.location.localtime)
-      
-      // await this.cacheManager.set(this.forecastService.convertDateToString(datetime) + ' ' + datetime.getHours(), data.current)
 
       return this.res.setLib(res).setStatus(200).setBody(data).release()
     } catch (error) {
